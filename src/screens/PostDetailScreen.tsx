@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedText } from "../components/ThemedText";
 import { ThemedView } from "../components/ThemedView";
 import { usePostDetail } from "../hooks/usePostDetail";
@@ -24,77 +23,77 @@ export function PostDetailScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView
-        style={[styles.container, { backgroundColor: colors.background }]}
-        edges={["top"]}
-      >
-        <ThemedView style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-          <ThemedText
-            style={[styles.loadingText, { color: colors.textSecondary }]}
-          >
-            Loading post details...
-          </ThemedText>
-        </ThemedView>
-      </SafeAreaView>
+      <ThemedView style={styles.centerContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <ThemedText
+          style={[styles.loadingText, { color: colors.textSecondary }]}
+        >
+          Loading post details...
+        </ThemedText>
+      </ThemedView>
     );
   }
 
   if (error || !post) {
     return (
-      <SafeAreaView
-        style={[styles.container, { backgroundColor: colors.background }]}
-        edges={["top"]}
-      >
-        <ThemedView style={styles.centerContainer}>
-          <ThemedText style={[styles.errorText, { color: colors.text }]}>
-            {error || "Post not found"}
-          </ThemedText>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
-            onPress={refetch}
-          >
-            <ThemedText style={styles.buttonText}>Retry</ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
-      </SafeAreaView>
+      <ThemedView style={styles.centerContainer}>
+        <ThemedText style={[styles.errorText, { color: colors.text }]}>
+          {error || "Post not found"}
+        </ThemedText>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: colors.primary }]}
+          onPress={refetch}
+        >
+          <ThemedText style={styles.buttonText}>Retry</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
     );
   }
 
   return (
-    <SafeAreaView
+    <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
-      edges={["top"]}
+      contentContainerStyle={styles.contentContainer}
     >
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <ThemedView style={[styles.card, { borderColor: colors.border }]}>
-          <ThemedText style={[styles.label, { color: colors.textSecondary }]}>
-            Title
-          </ThemedText>
-          <ThemedText style={styles.title}>{post.title}</ThemedText>
+      <ThemedView style={[styles.card, { borderColor: colors.border }]}>
+        <ThemedText style={[styles.label, { color: colors.textSecondary }]}>
+          Title
+        </ThemedText>
+        <ThemedText style={styles.title}>{post.title}</ThemedText>
 
-          <ThemedView
-            style={[styles.divider, { backgroundColor: colors.border }]}
-          />
+        <ThemedView
+          style={[styles.divider, { backgroundColor: colors.border }]}
+        />
 
-          <ThemedText style={[styles.label, { color: colors.textSecondary }]}>
-            Body
+        <ThemedText style={[styles.label, { color: colors.textSecondary }]}>
+          Body
+        </ThemedText>
+        <ThemedText style={styles.body}>{post.body}</ThemedText>
+
+        <ThemedView
+          style={[styles.divider, { backgroundColor: colors.border }]}
+        />
+
+        <ThemedView style={styles.metaContainer}>
+          <ThemedText style={[styles.metaLabel, { color: colors.textSecondary }]}>
+            User ID:
           </ThemedText>
-          <ThemedText style={styles.body}>{post.body}</ThemedText>
+          <ThemedText style={styles.metaValue}>{post.userId}</ThemedText>
         </ThemedView>
-      </ScrollView>
-    </SafeAreaView>
+
+        <ThemedView style={styles.metaContainer}>
+          <ThemedText style={[styles.metaLabel, { color: colors.textSecondary }]}>
+            Post ID:
+          </ThemedText>
+          <ThemedText style={styles.metaValue}>{post.id}</ThemedText>
+        </ThemedView>
+      </ThemedView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  scrollView: {
     flex: 1,
   },
   contentContainer: {
