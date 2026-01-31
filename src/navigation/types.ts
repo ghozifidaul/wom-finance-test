@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   Home: undefined;
+  PostDetail: { postId: number };
 };
 
 declare global {

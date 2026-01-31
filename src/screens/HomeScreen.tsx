@@ -12,13 +12,24 @@ import { ThemedView } from "../components/ThemedView";
 import { usePosts } from "../hooks/usePosts";
 import { useTheme } from "../theme";
 import { Post } from "../types/post";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "../navigation/types";
 
 export function HomeScreen() {
-  const { theme, colors } = useTheme();
+  const { colors } = useTheme();
   const { posts, loading, error, refetch } = usePosts();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handlePostPress = (postId: number) => {
+    navigation.navigate("PostDetail", { postId });
+  };
 
   const renderPost = ({ item }: { item: Post }) => (
-    <ThemedView style={[styles.postContainer, { borderColor: colors.border }]}>
+    <TouchableOpacity
+      style={[styles.postContainer, { borderColor: colors.border }]}
+      onPress={() => handlePostPress(item.id)}
+      activeOpacity={0.7}
+    >
       <ThemedText style={styles.postTitle} numberOfLines={2}>
         {item.title}
       </ThemedText>
@@ -28,7 +39,7 @@ export function HomeScreen() {
       >
         {item.body}
       </ThemedText>
-    </ThemedView>
+    </TouchableOpacity>
   );
 
   if (loading && posts.length === 0) {
@@ -135,6 +146,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 8,
     borderWidth: 1,
+    backgroundColor: "transparent",
   } as ViewStyle,
   postTitle: {
     fontSize: 16,
