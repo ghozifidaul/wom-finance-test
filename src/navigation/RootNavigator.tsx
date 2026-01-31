@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import { HomeScreen } from '../screens/HomeScreen';
 import { useTheme } from '../theme';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -26,7 +27,10 @@ export function RootNavigator() {
       <Stack.Screen 
         name="Home" 
         component={HomeScreen}
-        options={{ title: 'Home' }}
+        options={{ 
+          title: 'Home',
+          headerRight: () => <ThemeToggle />,
+        }}
       />
     </Stack.Navigator>
   );

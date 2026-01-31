@@ -1,20 +1,20 @@
-import { 
-  StyleSheet, 
-  TouchableOpacity, 
-  FlatList, 
-  ActivityIndicator, 
+import {
+  ActivityIndicator,
+  FlatList,
   RefreshControl,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
   ViewStyle,
-  TextStyle 
 } from "react-native";
-import { ThemedView } from "../components/ThemedView";
 import { ThemedText } from "../components/ThemedText";
-import { useTheme } from "../theme";
+import { ThemedView } from "../components/ThemedView";
 import { usePosts } from "../hooks/usePosts";
+import { useTheme } from "../theme";
 import { Post } from "../types/post";
 
 export function HomeScreen() {
-  const { theme, toggleTheme, colors } = useTheme();
+  const { theme, colors } = useTheme();
   const { posts, loading, error, refetch } = usePosts();
 
   const renderPost = ({ item }: { item: Post }) => (
@@ -22,35 +22,22 @@ export function HomeScreen() {
       <ThemedText style={styles.postTitle} numberOfLines={2}>
         {item.title}
       </ThemedText>
-      <ThemedText style={[styles.postBody, { color: colors.textSecondary }]} numberOfLines={3}>
+      <ThemedText
+        style={[styles.postBody, { color: colors.textSecondary }]}
+        numberOfLines={3}
+      >
         {item.body}
       </ThemedText>
-    </ThemedView>
-  );
-
-  const renderHeader = () => (
-    <ThemedView style={styles.header}>
-      <ThemedText style={styles.title}>Posts</ThemedText>
-      <ThemedText style={[styles.subtitle, { color: colors.textSecondary }]}>
-        Current theme: {theme}
-      </ThemedText>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors.primary }]}
-        onPress={toggleTheme}
-      >
-        <ThemedText style={styles.buttonText}>
-          Toggle Theme
-        </ThemedText>
-      </TouchableOpacity>
     </ThemedView>
   );
 
   if (loading && posts.length === 0) {
     return (
       <ThemedView style={styles.centerContainer}>
-        {renderHeader()}
         <ActivityIndicator size="large" color={colors.primary} />
-        <ThemedText style={[styles.loadingText, { color: colors.textSecondary }]}>
+        <ThemedText
+          style={[styles.loadingText, { color: colors.textSecondary }]}
+        >
           Loading posts...
         </ThemedText>
       </ThemedView>
@@ -60,7 +47,6 @@ export function HomeScreen() {
   if (error && posts.length === 0) {
     return (
       <ThemedView style={styles.centerContainer}>
-        {renderHeader()}
         <ThemedText style={[styles.errorText, { color: colors.text }]}>
           {error}
         </ThemedText>
@@ -68,9 +54,7 @@ export function HomeScreen() {
           style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={refetch}
         >
-          <ThemedText style={styles.buttonText}>
-            Retry
-          </ThemedText>
+          <ThemedText style={styles.buttonText}>Retry</ThemedText>
         </TouchableOpacity>
       </ThemedView>
     );
@@ -91,7 +75,6 @@ export function HomeScreen() {
             colors={[colors.primary]}
           />
         }
-        ListHeaderComponent={renderHeader}
         ListHeaderComponentStyle={styles.headerContainer}
       />
     </ThemedView>
